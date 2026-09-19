@@ -52,7 +52,7 @@ public class CallbackEventListner implements ApplicationListener<CallbackEvent> 
         try {
             post(url,json);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("failed to post the delivery callback to {}", url, e);
         }
         logger.debug("From application event "+ url + " " + json);
     }
