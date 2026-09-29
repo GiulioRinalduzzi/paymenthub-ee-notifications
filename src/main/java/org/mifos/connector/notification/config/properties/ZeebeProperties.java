@@ -1,7 +1,9 @@
 package org.mifos.connector.notification.config.properties;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The Zeebe gateway and the worker settings, read in five classes before this record existed -
@@ -13,14 +15,14 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  * where it is.
  * </p>
  */
+@Validated
 @ConfigurationProperties(prefix = "zeebe")
-public record ZeebeProperties(@DefaultValue Broker broker, @DefaultValue Client client,
-        @DefaultValue Worker worker) {
+public record ZeebeProperties(@NotNull @Valid Broker broker, @NotNull @Valid Client client, @NotNull @Valid Worker worker) {
 
-    public record Broker(@DefaultValue("zeebe-zeebe-gateway:26500") String contactpoint) {}
+    public record Broker(@NotNull String contactpoint) {}
 
-    public record Client(@DefaultValue("100") int maxExecutionThreads, @DefaultValue("30000") int ttl) {}
+    public record Client(@NotNull Integer maxExecutionThreads, @NotNull Integer ttl) {}
 
     /** timer is an ISO-8601 duration handed to Zeebe as a job variable, so it stays a string. */
-    public record Worker(@DefaultValue("PT15S") String timer, @DefaultValue("3") int retries) {}
+    public record Worker(@NotNull String timer, @NotNull Integer retries) {}
 }

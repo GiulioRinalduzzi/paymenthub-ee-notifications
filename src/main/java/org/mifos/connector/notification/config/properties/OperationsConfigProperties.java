@@ -1,13 +1,14 @@
 package org.mifos.connector.notification.config.properties;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
- * The tenant header names and values the gateway authenticates its own calls with. Read as four
- * {@code @Value} fields in three different classes before this record existed.
+ * The tenant header names and values the gateway authenticates its own calls with. Before this record
+ * existed, these four keys were read through ten {@code @Value} fields in three different classes.
  */
+@Validated
 @ConfigurationProperties(prefix = "operationsconfig")
-public record OperationsConfigProperties(@DefaultValue("Fineract-Platform-TenantId") String tenantid,
-        @DefaultValue("default") String tenantidvalue, @DefaultValue("Fineract-Tenant-App-Key") String tenantappkey,
-        @DefaultValue("") String tenantappvalue) {}
+public record OperationsConfigProperties(@NotNull String tenantid, @NotNull String tenantidvalue, @NotNull String tenantappkey,
+        @NotNull String tenantappvalue) {}

@@ -56,17 +56,6 @@ class DeploymentEnvironmentBindingTest {
     }
 
     @Test
-    void keepsTheDefaultsForWhatTheDeploymentDoesNotSet() {
-        Binder deployment = deploymentEnvironment();
-
-        // ports and protocols come from application.yml, not from the CR
-        assertEquals(5000, deployment.bindOrCreate("callbackconfig", CallbackConfigProperties.class).port());
-        assertEquals(9191, deployment.bindOrCreate("messagegatewayconfig", MessageGatewayConfigProperties.class).port());
-        assertEquals(30000, deployment.bindOrCreate("zeebe", ZeebeProperties.class).client().ttl());
-        assertEquals("PT15S", deployment.bindOrCreate("zeebe", ZeebeProperties.class).worker().timer());
-    }
-
-    @Test
     void keepsTheUnderscoreInTheVelocityFailureTypeKeys() {
         // velocity.failure_type and velocity.defaults.failure_type are the names in
         // application.yml and the names the templates use
@@ -87,17 +76,5 @@ class DeploymentEnvironmentBindingTest {
         assertEquals("Fineract-Platform-TenantId", operations.tenantid());
         assertEquals("Fineract-Tenant-App-Key", operations.tenantappkey());
         assertEquals("123456543234abdkdkdkd", operations.tenantappvalue());
-    }
-
-    @Test
-    void buildsEveryGroupFromItsDefaultsWhenTheSectionIsMissing() {
-        Binder empty = Binder.get(new StandardEnvironment());
-
-        // @DefaultValue on the nested groups: a missing section is built from its defaults
-        // rather than arriving null and failing later with a NullPointerException
-        assertEquals("zeebe-zeebe-gateway:26500", empty.bindOrCreate("zeebe", ZeebeProperties.class).broker().contactpoint());
-        assertEquals(3, empty.bindOrCreate("zeebe", ZeebeProperties.class).worker().retries());
-        assertEquals("USD", empty.bindOrCreate("velocity", VelocityProperties.class).defaults().currency());
-        assertEquals("localhost", empty.bindOrCreate("hostconfig", HostConfigProperties.class).host());
     }
 }

@@ -1,7 +1,9 @@
 package org.mifos.connector.notification.config.properties;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The names of the placeholders in the Velocity templates, and the text to use when a value is
@@ -12,14 +14,12 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  * templates use; relaxed binding matches it to failureType.
  * </p>
  */
+@Validated
 @ConfigurationProperties(prefix = "velocity")
-public record VelocityProperties(@DefaultValue("transactionid") String transactionid,
-        @DefaultValue("amount") String amount, @DefaultValue("date") String date,
-        @DefaultValue("account") String account, @DefaultValue("failType") String failureType,
-        @DefaultValue("txnType") String txnType, @DefaultValue("currency") String currency,
-        @DefaultValue Defaults defaults) {
+public record VelocityProperties(@NotNull String transactionid, @NotNull String amount, @NotNull String date,
+        @NotNull String account, @NotNull String failureType, @NotNull String txnType, @NotNull String currency,
+        @NotNull @Valid Defaults defaults) {
 
-    public record Defaults(@DefaultValue("123456789") String transactionid, @DefaultValue("100") String amount,
-            @DefaultValue("1234567890") String account, @DefaultValue("Reason not available") String failureType,
-            @DefaultValue("transfer") String txnType, @DefaultValue("USD") String currency) {}
+    public record Defaults(@NotNull String transactionid, @NotNull String amount, @NotNull String account,
+            @NotNull String failureType, @NotNull String txnType, @NotNull String currency) {}
 }
